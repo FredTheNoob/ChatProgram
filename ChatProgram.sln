@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatProgram", "ChatProgram.csproj", "{AD894286-32D1-4552-BC43-9A22B0B9E5A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsocketServer", "WebsocketServer\WebsocketServer.csproj", "{8235D160-472C-4C2C-9A02-1D64CD7B20DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatProgram", "WebsocketClient\ChatProgram.csproj", "{AD894286-32D1-4552-BC43-9A22B0B9E5A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8235D160-472C-4C2C-9A02-1D64CD7B20DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8235D160-472C-4C2C-9A02-1D64CD7B20DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8235D160-472C-4C2C-9A02-1D64CD7B20DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8235D160-472C-4C2C-9A02-1D64CD7B20DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD894286-32D1-4552-BC43-9A22B0B9E5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD894286-32D1-4552-BC43-9A22B0B9E5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD894286-32D1-4552-BC43-9A22B0B9E5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
