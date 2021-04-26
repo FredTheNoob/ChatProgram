@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using WebsocketServer.Classes;
 
 namespace ChatProgram
 {
@@ -19,6 +20,9 @@ namespace ChatProgram
         public Form1()
         {
             InitializeComponent();
+
+            // Make MongoDB instance
+            new Database();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -39,7 +43,7 @@ namespace ChatProgram
         private void Form1_Load(object sender, EventArgs e)
         {
             // SETUP
-            string host = "77.68.159.144";
+            string host = "localhost";
             ws = new WebSocket($"ws://{host}:6969/Chat");
 
             // EVENTS
