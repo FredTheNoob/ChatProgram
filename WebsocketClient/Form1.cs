@@ -9,20 +9,22 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using MetroFramework.Forms;
 using WebsocketServer.Classes;
 
 namespace ChatProgram
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MetroForm
     {
         WebSocket ws;
 
-        public Form1()
+        private User signedInUser;
+
+        public Form1(User _user)
         {
             InitializeComponent();
 
-            // Make MongoDB instance
-            new Database();
+            signedInUser = _user;
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -50,6 +52,8 @@ namespace ChatProgram
             ws.OnMessage += OnMessage;
 
             ws.Connect();
+
+            lblUsername.Text = signedInUser.name;
         }
 
         public void OnMessage(object sender, MessageEventArgs e)

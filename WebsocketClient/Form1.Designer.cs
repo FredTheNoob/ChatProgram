@@ -33,6 +33,7 @@ namespace ChatProgram
             this.lstMessages = new System.Windows.Forms.ListBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.lblUsername = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
             // btnSend
@@ -70,17 +71,29 @@ namespace ChatProgram
             this.lblTitle.TabIndex = 3;
             this.lblTitle.Text = "Chat Program - Version 1.0";
             // 
+            // lblUsername
+            // 
+            this.lblUsername.Location = new System.Drawing.Point(582, 9);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(126, 23);
+            this.lblUsername.TabIndex = 4;
+            this.lblUsername.Text = "Username";
+            this.lblUsername.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblUsername.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.lstMessages);
             this.Controls.Add(this.btnSend);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Resizable = false;
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -93,6 +106,7 @@ namespace ChatProgram
         private System.Windows.Forms.ListBox lstMessages;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblTitle;
+        private MetroFramework.Controls.MetroLabel lblUsername;
     }
 }
 

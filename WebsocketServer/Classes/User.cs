@@ -6,42 +6,49 @@ using System.Threading.Tasks;
 
 namespace WebsocketServer.Classes
 {
+    [MongoDB.Bson.Serialization.Attributes.BsonIgnoreExtraElements]
     public class User
     {
         public string name { get; set; }
-        public int id { get; set; }
-        public DateTime createdAt;
-        public List<User> friendsList;
+        public string password { get; set; }
+        public DateTime createdAt { get; set; }
+        public List<User> friendsList { get; set; }
+        public List<User> pendingFriendsList { get; set; }
 
-        public User(string _name)
+        public User(string _name, string _password)
         {
-            if (Database.instance.DoesUserExist(_name) == true)
-            {
-                // ERROR
-            } 
-            else
-            {
-                // MAKE NEW USER
-                _name = name;
-            }
+            name = _name;
+            password = _password;
+            createdAt = DateTime.Now;
+            friendsList = new List<User>();
+            pendingFriendsList = new List<User>();
         }
 
-        public void SendFriendRequest(string _name)
+        public void Create(User _user)
         {
-
+            Database.GetInstance().CreateNewUser(_user);
         }
 
-        public void AcceptFriendRequest(string _name)
+        public async void SendFriendRequest(string _name)
         {
-            
-            User _user = Database.instance.FindUser(_name);
+            User _user = await Database.GetInstance().FindUser(_name);
 
-            _user.friendsList.Add(this);
-            friendsList.Add(_user);
+            Database.GetInstance().AddPendingFriendRequest(_user);
+        }
 
-            // Save in DB
-            Database.instance.SaveUser(this);
-            Database.instance.SaveUser(_user);
+        public async void AcceptFriendRequest(string _name)
+        {
+            User _user = await Database.GetInstance().FindUser(_name);
+
+            Database.GetInstance().AddFriend(this);
+            Database.GetInstance().AddFriend(_user);
+        }
+
+        public async void RemoveFriend(string _name)
+        {
+            User _user = await Database.GetInstance().FindUser(_name);
+
+            Database.GetInstance().RemoveFriend(this, _user);
         }
     }
 }
