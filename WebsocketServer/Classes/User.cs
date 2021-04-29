@@ -12,16 +12,18 @@ namespace WebsocketServer.Classes
         public string name { get; set; }
         public string password { get; set; }
         public DateTime createdAt { get; set; }
-        public List<User> friendsList { get; set; }
-        public List<User> pendingFriendsList { get; set; }
+        public List<string> friendsList { get; set; }
+        public List<string> pendingFriendsList { get; set; }
+        public List<string> sentPendingFriendsList { get; set; }
 
         public User(string _name, string _password)
         {
             name = _name;
             password = _password;
             createdAt = DateTime.Now;
-            friendsList = new List<User>();
-            pendingFriendsList = new List<User>();
+            friendsList = new List<string>();
+            pendingFriendsList = new List<string>();
+            sentPendingFriendsList = new List<string>();
         }
 
         public void Create(User _user)
@@ -29,19 +31,19 @@ namespace WebsocketServer.Classes
             Database.GetInstance().CreateNewUser(_user);
         }
 
-        public async void SendFriendRequest(string _name)
+        public async Task SendFriendRequest(User _user)
         {
-            User _user = await Database.GetInstance().FindUser(_name);
-
-            Database.GetInstance().AddPendingFriendRequest(_user);
+            await Database.GetInstance().AddPendingFriendRequest(_user, this);
         }
 
-        public async void AcceptFriendRequest(string _name)
+        public async Task RemoveFriendRequest(User _user)
         {
-            User _user = await Database.GetInstance().FindUser(_name);
+            await Database.GetInstance().RemovePendingFriendRequest(this, _user);
+        }
 
-            Database.GetInstance().AddFriend(this);
-            Database.GetInstance().AddFriend(_user);
+        public async Task AcceptFriendRequest(User _otherUser)
+        {
+            await Database.GetInstance().AddFriend(this, _otherUser);
         }
 
         public async void RemoveFriend(string _name)

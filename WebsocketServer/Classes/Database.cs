@@ -38,7 +38,7 @@ namespace WebsocketServer.Classes
         {
             try
             {
-                MessageBox.Show($"Creating user ${_user.name}");
+                //MessageBox.Show($"Creating user {_user.name}");
                 Col.InsertOne(_user);
             }
             catch (Exception e)
@@ -66,28 +66,48 @@ namespace WebsocketServer.Classes
             }
         }
 
-        public async void AddFriend(User _user)
+        public async Task AddFriend(User _userThatAccepted ,User _user)
         {
-            User searchedUser = await FindUser(_user.name);
-            List<User> friends = searchedUser.friendsList;
+            List<string> friends = _user.friendsList;
+            List<string> friendsAccepted = _userThatAccepted.friendsList;
 
-            if (friends == null) friends = new List<User>();
-            friends.Add(_user);
+            friends.Add(_userThatAccepted.name);
+            friendsAccepted.Add(_user.name);
 
             var update = Builders<User>.Update.Set(x => x.friendsList, friends);
             await Col.UpdateOneAsync(x => x.name == _user.name, update);
+
+            var updateAccepted = Builders<User>.Update.Set(x => x.friendsList, friendsAccepted);
+            await Col.UpdateOneAsync(x => x.name == _userThatAccepted.name, updateAccepted);
         }
 
-        public async void AddPendingFriendRequest(User _user)
+        public async Task AddPendingFriendRequest(User _user, User _thisUser)
         {
-            User searchedUser = await FindUser(_user.name);
-            List<User> friends = searchedUser.pendingFriendsList;
+            List<string> friends = _user.pendingFriendsList;
 
-            if (friends == null) friends = new List<User>();
-            friends.Add(_user);
+            friends.Add(_thisUser.name);
+            _thisUser.sentPendingFriendsList.Add(_user.name);            
 
-            var update = Builders<User>.Update.Set(x => x.friendsList, friends);
+            var update = Builders<User>.Update.Set(x => x.pendingFriendsList, friends);
             await Col.UpdateOneAsync(x => x.name == _user.name, update);
+
+            var updateSelf = Builders<User>.Update.Set(x => x.sentPendingFriendsList, _thisUser.sentPendingFriendsList);
+            await Col.UpdateOneAsync(x => x.name == _thisUser.name, updateSelf);
+        }
+
+        public async Task RemovePendingFriendRequest(User _userRemoved, User _user)
+        {
+            List<string> friends = _user.pendingFriendsList;
+            List<string> sentFriends = _userRemoved.sentPendingFriendsList;
+
+            friends.Remove(friends.Find(x => x == _userRemoved.name));
+            sentFriends.Remove(sentFriends.Find(x => x == _user.name));
+
+            var update = Builders<User>.Update.Set(x => x.pendingFriendsList, friends);
+            await Col.UpdateOneAsync(x => x.name == _user.name, update);
+
+            var updateSent = Builders<User>.Update.Set(x => x.sentPendingFriendsList, sentFriends);
+            await Col.UpdateOneAsync(x => x.name == _userRemoved.name, updateSent);
         }
 
         public async void RemoveFriend(User _user, User _userRemoved)
@@ -95,11 +115,11 @@ namespace WebsocketServer.Classes
             User searchedUser = await FindUser(_user.name);
             User searchedUserRemoved = await FindUser(_userRemoved.name);
 
-            List<User> friends = searchedUser.friendsList;
-            List<User> friendsRemoved = searchedUserRemoved.friendsList;
+            List<string> friends = searchedUser.friendsList;
+            List<string> friendsRemoved = searchedUserRemoved.friendsList;
 
-            friends.Remove(friends.Find(x => x.name == _user.name));
-            friendsRemoved.Remove(friendsRemoved.Find(x => x.name == _userRemoved.name));
+            friends.Remove(friends.Find(x => x == _user.name));
+            friendsRemoved.Remove(friendsRemoved.Find(x => x == _userRemoved.name));
 
             var update = Builders<User>.Update.Set(x => x.friendsList, friends);
             var updateRemoved = Builders<User>.Update.Set(x => x.friendsList, friendsRemoved);

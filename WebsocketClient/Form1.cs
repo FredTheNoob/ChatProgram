@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using MetroFramework.Forms;
+using MetroFramework.Controls;
 using WebsocketServer.Classes;
 
 namespace ChatProgram
@@ -25,6 +26,9 @@ namespace ChatProgram
             InitializeComponent();
 
             signedInUser = _user;
+
+            // USER CONTROLS
+            usrFriends.Setup(signedInUser);
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -54,6 +58,7 @@ namespace ChatProgram
             ws.Connect();
 
             lblUsername.Text = signedInUser.name;
+            LoadFriends();
         }
 
         public void OnMessage(object sender, MessageEventArgs e)
@@ -66,7 +71,34 @@ namespace ChatProgram
                 lstMessages.TopIndex = lstMessages.Items.Count - 1; // Auto scroll
             });
         }
-    }
 
-    
+        private void LoadFriends()
+        {
+            if (signedInUser.friendsList.Count > 0)
+            {
+                foreach (string friendName in signedInUser.friendsList)
+                {
+                    MetroButton btnFriend = new MetroButton();
+
+                    btnFriend.Text = friendName;
+                    btnFriend.Dock = DockStyle.Top;
+                    btnFriend.Size = new Size(187, 38);
+                    btnFriend.Theme = MetroFramework.MetroThemeStyle.Dark;
+                    btnFriend.Click += btnFriendClicked;
+
+                    pnlFriends.Controls.Add(btnFriend);
+                }
+            }
+        }
+
+        private void btnFriendClicked(object sender, EventArgs e)
+        {
+            usrFriends.Hide();
+        }
+
+        private void btnFriends_Click(object sender, EventArgs e)
+        {
+            usrFriends.Show();
+        }
+    }
 }

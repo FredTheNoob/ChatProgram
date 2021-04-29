@@ -90,16 +90,40 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\Login.cs">
+    <Compile Include="UserControls\Form1\Chat.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\Login.Designer.cs">
+    <Compile Include="UserControls\Form1\Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Form1\Friends.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Form1\Friends.Designer.cs">
+      <DependentUpon>Friends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Friends\IncomingCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Friends\IncomingCard.Designer.cs">
+      <DependentUpon>IncomingCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Friends\PendingCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Friends\PendingCard.Designer.cs">
+      <DependentUpon>PendingCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SignIn\Login.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\SignIn\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SignUp.cs">
+    <Compile Include="UserControls\SignIn\SignUp.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\SignUp.Designer.cs">
+    <Compile Include="UserControls\SignIn\SignUp.Designer.cs">
       <DependentUpon>SignUp.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
@@ -117,10 +141,22 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UserControls\Login.resx">
+    <EmbeddedResource Include="UserControls\Form1\Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Form1\Friends.resx">
+      <DependentUpon>Friends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Friends\IncomingCard.resx">
+      <DependentUpon>IncomingCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Friends\PendingCard.resx">
+      <DependentUpon>PendingCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\SignIn\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\SignUp.resx">
+    <EmbeddedResource Include="UserControls\SignIn\SignUp.resx">
       <DependentUpon>SignUp.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
