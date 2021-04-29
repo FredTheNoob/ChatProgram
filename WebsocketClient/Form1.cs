@@ -28,7 +28,7 @@ namespace ChatProgram
             signedInUser = _user;
 
             // USER CONTROLS
-            usrFriends.Setup(signedInUser);
+            usrFriends.Setup(this, signedInUser);
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -57,6 +57,7 @@ namespace ChatProgram
 
             ws.Connect();
 
+            ActiveControl = btnFriends;
             lblUsername.Text = signedInUser.name;
             LoadFriends();
         }
@@ -72,8 +73,10 @@ namespace ChatProgram
             });
         }
 
-        private void LoadFriends()
+        public void LoadFriends()
         {
+            pnlFriends.Controls.Clear();
+
             if (signedInUser.friendsList.Count > 0)
             {
                 foreach (string friendName in signedInUser.friendsList)

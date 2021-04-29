@@ -10,19 +10,22 @@ using System.Windows.Forms;
 using MetroFramework.Controls;
 using WebsocketServer.Classes;
 using ChatProgram.UserControls.Friends;
+using ChatProgram;
 
 namespace ChatProgram.UserControls.Form1
 {
     public partial class Friends : MetroUserControl
     {
+        private ChatProgram.Form1 main;
         private User signedInUser;
         public Friends()
         {
             InitializeComponent();
         }
 
-        public void Setup(User _signedInUser)
+        public void Setup(ChatProgram.Form1 _main, User _signedInUser)
         {
+            main = _main;
             signedInUser = _signedInUser;
 
             CheckForFriendRequests();
@@ -88,7 +91,11 @@ namespace ChatProgram.UserControls.Form1
 
         private void OnCardRemoved(PendingCard _card) => pnlPending.Controls.RemoveByKey(_card.Name);
 
-        private void OnFinished(IncomingCard _card) => pnlIncoming.Controls.RemoveByKey(_card.Name);
+        private void OnFinished(IncomingCard _card)
+        {
+            pnlIncoming.Controls.RemoveByKey(_card.Name);
+            main.LoadFriends();
+        }
 
         private void UpdateStatusLabel(string _text, Color _color)
         {
