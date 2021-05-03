@@ -10,32 +10,45 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using MetroFramework.Forms;
+using MetroFramework.Controls;
+using WebsocketServer.Classes;
+using ChatProgram.UserControls.Form1;
 
 namespace ChatProgram
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MetroForm
     {
         WebSocket ws;
 
-        public Form1()
+        private User signedInUser;
+
+        private Dictionary<string, Chat> chatUserControls = new Dictionary<string, Chat>();
+
+        public Form1(User _user)
         {
             InitializeComponent();
+
+            signedInUser = _user;
+
+            // USER CONTROLS
+            usrFriends.Setup(this, signedInUser);
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        /*private void btnSend_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtMessage.Text)) return;
             ws.Send(txtMessage.Text);
             txtMessage.Text = "";
-        }
+        }*/
 
-        private void txtMessage_KeyDown(object sender, KeyEventArgs e)
+        /*private void txtMessage_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 btnSend_Click(sender, e);
             }
-        }
+        }*/
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -44,44 +57,75 @@ namespace ChatProgram
             ws = new WebSocket($"ws://{host}:6969/Chat");
 
             // EVENTS
-            ws.OnMessage += OnMessage;
+            //ws.OnMessage += OnMessage;
 
             ws.Connect();
+
+            ActiveControl = btnFriends;
+            lblUsername.Text = signedInUser.name;
+            LoadFriends();
         }
 
-        public void OnMessage(object sender, MessageEventArgs e)
+        /*public void OnMessage(object sender, MessageEventArgs e)
         {
             #region Kilde
             // Hvordan man opdaterer UIen (som kører på en main thread)
             // Kilde: https://stackoverflow.com/questions/43741059/cross-thread-operation-not-valid-control-textbox-accessed-from-a-thread-other
             #endregion
             lstMessages.Invoke((Action)delegate
-              {
-                  if (!e.IsBinary)
-                  {
-                      lstMessages.Items.Add(e.Data);
-                      lstMessages.TopIndex = lstMessages.Items.Count - 1; // Auto scroll
-                  }
-                  else
-                  {
-                      #region kilde
-                      // Filestreams Microsoft Dokumentation 
-                      // Kilde: https://docs.microsoft.com/en-us/dotnet/api/system.io.filestream?view=net-5.0
-                      #endregion
-                      using (FileStream fs = File.Create(Application.UserAppDataPath+@"/Downloads/"+e.))
-                      {
-                          
-                      }
-                  }
-              });
+            {
+                lstMessages.Items.Add(e.Data);
+                lstMessages.TopIndex = lstMessages.Items.Count - 1; // Auto scroll
+            });
+        }*/
+
+        public void LoadFriends()
+        {
+            pnlFriends.Controls.Clear();
+
+            if (signedInUser.friendsList.Count > 0)
+            {
+                foreach (string friendName in signedInUser.friendsList)
+                {
+                    MetroButton btnFriend = new MetroButton();
+
+                    btnFriend.Text = friendName;
+                    btnFriend.Dock = DockStyle.Top;
+                    btnFriend.Size = new Size(187, 38);
+                    btnFriend.Theme = MetroFramework.MetroThemeStyle.Dark;
+                    btnFriend.Click += (sender, e) => btnFriendClicked(sender, e, btnFriend.Text);
+
+                    Chat userChat = new Chat(btnFriend.Text, ws);
+                    userChat.Location = new Point(205, 35);
+                    userChat.Hide();
+
+                    Controls.Add(userChat);
+                    chatUserControls.Add(btnFriend.Text, userChat);
+
+                    pnlFriends.Controls.Add(btnFriend);
+                }
+            }
         }
 
-        private void btnAddFile_Click(object sender, EventArgs e)
+        private void btnFriendClicked(object sender, EventArgs e, string name)
         {
-            ofdUpload.ShowDialog();
-            ws.Send(new FileInfo(ofdUpload.FileName));
+            usrFriends.Hide();
+
+            HideAllChatUserControls();
+            chatUserControls[name].Show();
+        }
+
+        private void btnFriends_Click(object sender, EventArgs e)
+        {
+            usrFriends.Show();
+        }
+
+        private void HideAllChatUserControls()
+        {
+            foreach (Chat control in chatUserControls.Values)
+            {
+                control.Hide();
+            }
         }
     }
-
-    
 }
