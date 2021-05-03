@@ -33,6 +33,8 @@ namespace ChatProgram
             this.lstMessages = new System.Windows.Forms.ListBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.btnAddFile = new System.Windows.Forms.Button();
+            this.ofdUpload = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // btnSend
@@ -55,9 +57,9 @@ namespace ChatProgram
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(60, 393);
+            this.txtMessage.Location = new System.Drawing.Point(127, 393);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(516, 20);
+            this.txtMessage.Size = new System.Drawing.Size(449, 20);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyDown);
             // 
@@ -70,11 +72,27 @@ namespace ChatProgram
             this.lblTitle.TabIndex = 3;
             this.lblTitle.Text = "Chat Program - Version 1.0";
             // 
+            // btnAddFile
+            // 
+            this.btnAddFile.Location = new System.Drawing.Point(60, 380);
+            this.btnAddFile.Name = "btnAddFile";
+            this.btnAddFile.Size = new System.Drawing.Size(61, 45);
+            this.btnAddFile.TabIndex = 4;
+            this.btnAddFile.Text = "Upload";
+            this.btnAddFile.UseVisualStyleBackColor = true;
+            this.btnAddFile.Click += new System.EventHandler(this.btnAddFile_Click);
+            // 
+            // ofdUpload
+            // 
+            this.ofdUpload.FileName = "*.*";
+            this.ofdUpload.InitialDirectory = "%UserProfile%\\Documents";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnAddFile);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.lstMessages);
@@ -93,6 +111,8 @@ namespace ChatProgram
         private System.Windows.Forms.ListBox lstMessages;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Button btnAddFile;
+        private System.Windows.Forms.OpenFileDialog ofdUpload;
     }
 }
 
