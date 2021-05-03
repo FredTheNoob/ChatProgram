@@ -29,9 +29,6 @@ namespace ChatProgram
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSend = new System.Windows.Forms.Button();
-            this.lstMessages = new System.Windows.Forms.ListBox();
-            this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblUsername = new MetroFramework.Controls.MetroLabel();
             this.btnFriends = new MetroFramework.Controls.MetroButton();
@@ -39,32 +36,6 @@ namespace ChatProgram
             this.pnlFriends = new MetroFramework.Controls.MetroPanel();
             this.usrFriends = new ChatProgram.UserControls.Form1.Friends();
             this.SuspendLayout();
-            // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(727, 418);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(65, 20);
-            this.btnSend.TabIndex = 1;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // lstMessages
-            // 
-            this.lstMessages.FormattingEnabled = true;
-            this.lstMessages.Location = new System.Drawing.Point(205, 83);
-            this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(587, 329);
-            this.lstMessages.TabIndex = 1;
-            // 
-            // txtMessage
-            // 
-            this.txtMessage.Location = new System.Drawing.Point(205, 418);
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(516, 20);
-            this.txtMessage.TabIndex = 0;
-            this.txtMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyDown);
             // 
             // lblTitle
             // 
@@ -145,9 +116,6 @@ namespace ChatProgram
             this.Controls.Add(this.btnFriends);
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.txtMessage);
-            this.Controls.Add(this.lstMessages);
-            this.Controls.Add(this.btnSend);
             this.Name = "Form1";
             this.Resizable = false;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -158,10 +126,6 @@ namespace ChatProgram
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.ListBox lstMessages;
-        private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblTitle;
         private MetroFramework.Controls.MetroLabel lblUsername;
         private MetroFramework.Controls.MetroButton btnFriends;
