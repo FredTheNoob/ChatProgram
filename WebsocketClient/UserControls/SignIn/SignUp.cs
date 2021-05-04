@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
 using WebsocketServer.Classes;
+using WebSocketSharp;
 
 namespace ChatProgram.UserControls
 {
@@ -17,15 +18,18 @@ namespace ChatProgram.UserControls
     {
         private MetroUserControl loginControl;
         private SignIn signInForm;
+        private WebSocket ws;
+
         public SignUp()
         {
             InitializeComponent();
         }
 
-        public void Setup(SignIn _signInForm, MetroUserControl _loginControl)
+        public void Setup(SignIn _signInForm, MetroUserControl _loginControl, WebSocket _ws)
         {
             signInForm = _signInForm;
             loginControl = _loginControl;
+            ws = _ws;
         }
 
         private async void btnSignUp_Click(object sender, EventArgs e)
@@ -53,8 +57,6 @@ namespace ChatProgram.UserControls
                 User newUser = new User(txtUsername.Text, txtPassword.Text);
                 Database.GetInstance().CreateNewUser(newUser);
 
-                this.Hide();
-                signInForm.Login(newUser);
             }
             else
             {

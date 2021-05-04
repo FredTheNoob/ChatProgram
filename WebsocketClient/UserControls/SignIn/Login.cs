@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
 using WebsocketServer.Classes;
+using WebSocketSharp;
+using WebSocket = WebSocketSharp.WebSocket;
 
 namespace ChatProgram.UserControls
 {
@@ -17,19 +20,22 @@ namespace ChatProgram.UserControls
     {
         private MetroUserControl signUpControl;
         private SignIn signInForm;
+        private WebSocket ws;
+
 
         public Login()
         {
             InitializeComponent();
         }
 
-        public void Setup(SignIn _signInForm, MetroUserControl _SignUpControl)
+        public void Setup(SignIn _signInForm, MetroUserControl _SignUpControl, WebSocket _ws)
         {
             signInForm = _signInForm;
             signUpControl = _SignUpControl;
+            ws = _ws;
         }
 
-        private async void btnLogin_Click(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             if (txtUsername.Text == "")
             {
@@ -43,21 +49,9 @@ namespace ChatProgram.UserControls
                 return;
             }
 
-            User user = await Database.GetInstance().FindUser(txtUsername.Text);
-            if (user == null)
-            {
-                UpdateErrorLabel("Username is incorrect");
-                return;
-            }
+            ws.Send($"Login§{txtUsername.Text}§{txtPassword.Text}");
 
-            if (user.password != txtPassword.Text)
-            {
-                UpdateErrorLabel("Password is incorrect");
-                return;
-            }
 
-            this.Hide();
-            signInForm.Login(user);
         }
 
         private void UpdateErrorLabel(string _text)

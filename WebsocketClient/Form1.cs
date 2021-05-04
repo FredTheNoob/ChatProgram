@@ -25,11 +25,17 @@ namespace ChatProgram
 
         private Dictionary<string, Chat> chatUserControls = new Dictionary<string, Chat>();
 
-        public Form1(User _user)
+        public Form1(User _user, WebSocket _ws)
         {
-            InitializeComponent();
 
+            MessageBox.Show("TEST",_user.name);
+
+            ws = _ws;
             signedInUser = _user;
+
+            
+
+            InitializeComponent();
 
             // USER CONTROLS
             usrFriends.Setup(this, signedInUser);
@@ -52,14 +58,10 @@ namespace ChatProgram
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // SETUP
-            string host = "localhost";
-            ws = new WebSocket($"ws://{host}:6969/Chat");
 
             // EVENTS
             //ws.OnMessage += OnMessage;
 
-            ws.Connect();
 
             ActiveControl = btnFriends;
             lblUsername.Text = signedInUser.name;
