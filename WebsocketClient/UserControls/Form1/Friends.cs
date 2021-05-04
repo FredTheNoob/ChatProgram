@@ -87,6 +87,20 @@ namespace ChatProgram.UserControls.Form1
                     pnlIncoming.Controls.Add(card);
                 }
             }
+
+            if (signedInUser.sentPendingFriendsList.Count > 0)
+            {
+                foreach (string otherUsername in signedInUser.sentPendingFriendsList)
+                {
+                    User otherUser = await Database.GetInstance().FindUser(otherUsername);
+
+                    PendingCard card = new PendingCard(signedInUser, otherUser);
+                    card.Removed += OnCardRemoved;
+
+                    card.Dock = DockStyle.Top;
+                    pnlPending.Controls.Add(card);
+                }
+            }
         }
 
         private void OnCardRemoved(PendingCard _card) => pnlPending.Controls.RemoveByKey(_card.Name);

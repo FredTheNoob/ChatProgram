@@ -27,13 +27,8 @@ namespace ChatProgram
 
         public Form1(User _user, WebSocket _ws)
         {
-
-            MessageBox.Show("TEST",_user.name);
-
             ws = _ws;
             signedInUser = _user;
-
-            
 
             InitializeComponent();
 
@@ -41,45 +36,13 @@ namespace ChatProgram
             usrFriends.Setup(this, signedInUser);
         }
 
-        /*private void btnSend_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(txtMessage.Text)) return;
-            ws.Send(txtMessage.Text);
-            txtMessage.Text = "";
-        }*/
-
-        /*private void txtMessage_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnSend_Click(sender, e);
-            }
-        }*/
-
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            // EVENTS
-            //ws.OnMessage += OnMessage;
-
-
             ActiveControl = btnFriends;
             lblUsername.Text = signedInUser.name;
             LoadFriends();
         }
 
-        /*public void OnMessage(object sender, MessageEventArgs e)
-        {
-            #region Kilde
-            // Hvordan man opdaterer UIen (som kører på en main thread)
-            // Kilde: https://stackoverflow.com/questions/43741059/cross-thread-operation-not-valid-control-textbox-accessed-from-a-thread-other
-            #endregion
-            lstMessages.Invoke((Action)delegate
-            {
-                lstMessages.Items.Add(e.Data);
-                lstMessages.TopIndex = lstMessages.Items.Count - 1; // Auto scroll
-            });
-        }*/
 
         public void LoadFriends()
         {

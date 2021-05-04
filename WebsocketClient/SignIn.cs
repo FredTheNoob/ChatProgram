@@ -40,16 +40,12 @@ namespace ChatProgram
 
             ws.OnMessage -= WsOnMessage;
 
-            Form1 form = new Form1(_user, ws);
-
             // Visibility
             this.Invoke((Action)delegate
             {
                 this.Hide();
-            });
 
-            form.Invoke((Action) delegate
-            {
+                Form form = new Form1(_user, ws);
                 form.Show();
             });
         }
