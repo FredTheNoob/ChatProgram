@@ -32,7 +32,13 @@ namespace ChatProgram.UserControls
             ws = _ws;
         }
 
-        private async void btnSignUp_Click(object sender, EventArgs e)
+        public void UpdateErrorLabel(string _text)
+        {
+            lblError.Text = _text;
+            lblError.Visible = true;
+        }
+
+        private void btnSignUp_Click(object sender, EventArgs e)
         {
             if (txtUsername.Text == "")
             {
@@ -52,23 +58,7 @@ namespace ChatProgram.UserControls
                 return;
             }
 
-            if (await Database.GetInstance().DoesUserExist(txtUsername.Text) == false)
-            {
-                User newUser = new User(txtUsername.Text, txtPassword.Text);
-                Database.GetInstance().CreateNewUser(newUser);
-
-            }
-            else
-            {
-                UpdateErrorLabel("Username already exists. Please pick another username and try again");
-                return;
-            }
-        }
-
-        private void UpdateErrorLabel(string _text)
-        {
-            lblError.Text = _text;
-            lblError.Visible = true;
+            ws.Send($"Register§{txtUsername.Text}§{txtPassword.Text}");
         }
 
         private void lblChangeToSignUp_Click(object sender, EventArgs e)

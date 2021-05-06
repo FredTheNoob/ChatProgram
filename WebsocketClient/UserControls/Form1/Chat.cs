@@ -31,16 +31,21 @@ namespace ChatProgram.UserControls.Form1
         private void btnSend_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtMessage.Text)) return;
-            ws.Send(txtMessage.Text);
+            if (txtMessage.Text.Contains('§')) return;
+
+            string msg = $"Message§{lblUsername.Text}§{txtMessage.Text}";
+            ws.Send(msg);
             txtMessage.Text = "";
         }
 
         private void txtMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnSend_Click(sender, e);
-            }
+            if (e.KeyCode == Keys.Enter) btnSend_Click(sender, e);
+        }
+
+        public void AddMessage(string text)
+        {
+            lstMessages.Items.Add(text);
         }
     }
 }

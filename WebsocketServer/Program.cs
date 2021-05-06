@@ -32,42 +32,60 @@ namespace WebsocketServer
 
         public class Chat : WebSocketBehavior
         {
+            private User user;
 
             protected async override void OnMessage(MessageEventArgs e)
             {
-                Console.WriteLine($"Is Binary: {e.IsBinary} | Is Text {e.IsText} | Is Ping {e.IsPing}");
                 //Sessions.Broadcast(e.Data);
                 // hvis det modtagede data ikke er teks så skal resten af koden ikke køre da vores klienter kun sender text når de logger på
-                
-                //if (!e.IsText) return; // TODO: File transfers here
-                //if (!e.Data.Contains('§')) return;
+                if (!e.IsText) return; // TODO: File transfers here
+                if (!e.Data.Contains('§')) return;
 
                 var data = e.Data.Split('§');
-                
-                
-
-                Console.WriteLine("HELLOOOOOOOOO");
-
                 if (data[0] == "Login")
                 {
+                    user = await Database.GetInstance().FindUser(data[1]);
 
-
-                    var user = await Database.GetInstance().FindUser(data[1]);
-
-                    if(user == null) return;
+                    if(user == null)
+                    {
+                        Send("§Login Failed: This user doesn't exist");
+                        return;
+                    }
 
                     if (user.password == data[2])
                     {
-                        userDictionary.Add(user.name, ID);
+                        userDictionary.Add(user.name, ID); 
                         Send(JsonConvert.SerializeObject(user));
-
                     } 
+                    else
+                    {
+                        Send("§Login Failed: Password is incorrect");
+                    }
 
                     // TODO: Use db to authenticate user or send back an error
                 }
                 else if (data[0] == "Register")
                 {
                     // TODO: Register a user
+                    user = await Database.GetInstance().FindUser(data[1]);
+
+                    if (user == null)
+                    {
+                        User newUser = new User(data[1], data[2]);
+                        Database.GetInstance().CreateNewUser(newUser);
+
+                        userDictionary.Add(newUser.name, ID);
+                        Send(JsonConvert.SerializeObject(newUser));
+                    }
+                    else
+                    {
+                        Send("§Register Failed: This user already exist. Pick another username and try again");
+                    }
+                }
+                else if (data[0] == "Message")
+                {
+                    Sessions.SendTo($"{user.name}§{user.name}: {data[2]}", userDictionary[data[1]]);
+                    Send($"{data[1]}§{user.name}: {data[2]}");
                 }
             }
         }

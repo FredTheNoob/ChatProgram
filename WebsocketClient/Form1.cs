@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using System.Windows.Forms;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -41,6 +42,7 @@ namespace ChatProgram
             ActiveControl = btnFriends;
             lblUsername.Text = signedInUser.name;
             LoadFriends();
+            ws.OnMessage += OnMessage;
         }
 
 
@@ -91,6 +93,17 @@ namespace ChatProgram
             {
                 control.Hide();
             }
+        }
+
+        private void OnMessage(object sender, MessageEventArgs e)
+        {
+            // Visibility
+            this.Invoke((Action)delegate
+            {
+                var data = e.Data.Split('§');
+                chatUserControls[data[0]].AddMessage(data[1]);
+                new SoundPlayer(@"c:\Windows\Media\chimes.wav").Play();
+            });
         }
     }
 }

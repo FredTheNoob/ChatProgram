@@ -35,6 +35,13 @@ namespace ChatProgram.UserControls
             ws = _ws;
         }
 
+        public void UpdateErrorLabel(string _text)
+        {
+            lblError.Text = _text;
+            lblError.TextAlign = ContentAlignment.MiddleCenter;
+            lblError.Visible = true;
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (txtUsername.Text == "")
@@ -50,15 +57,6 @@ namespace ChatProgram.UserControls
             }
 
             ws.Send($"Login§{txtUsername.Text}§{txtPassword.Text}");
-
-
-        }
-
-        private void UpdateErrorLabel(string _text)
-        {
-            lblError.Text = _text;
-            lblError.TextAlign = ContentAlignment.MiddleCenter;
-            lblError.Visible = true;
         }
 
         private void lblChangeToSignUp_Click(object sender, EventArgs e)
