@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using WebsocketServer.Classes;
 using WebSocketSharp;
 using MetroFramework;
+using MetroFramework.Controls;
 
 namespace ChatProgram
 {
@@ -22,10 +23,6 @@ namespace ChatProgram
         public SignIn()
         {
             InitializeComponent();
-
-            // USER CONTROLS
-            usrLogin.Setup(this, usrSignUp, ws);
-            usrSignUp.Setup(this, usrLogin, ws);
 
             usrLogin.Hide();
             usrSignUp.Hide();
@@ -70,6 +67,7 @@ namespace ChatProgram
 
             ws.OnMessage += WsOnMessage;
             ws.OnOpen += OnOpen;
+            ws.OnClose += OnClose;
             ws.OnError += OnError;
 
             ws.Connect();
@@ -77,10 +75,21 @@ namespace ChatProgram
 
         private void OnOpen(object sender, EventArgs e)
         {
+            // USER CONTROLS
+            usrLogin.Setup(this, usrSignUp, ws);
+            usrSignUp.Setup(this, usrLogin, ws);
+
             usrSignUp.Show();
             usrLogin.Show();
+            usrLogin.SetActiveControl();
 
             ws.OnOpen -= OnOpen;
+        }
+
+        private void OnClose(object sender, CloseEventArgs e)
+        {
+            if (e.Code == 1005) return; // Hvis vi støder på exit koden 1005 ved vi at brugeren selv har lukket programmet
+            MetroMessageBox.Show(this.Owner, $"Websocket closed {e.Code}: {e.Reason}");
         }
 
         private void OnError(object sender, ErrorEventArgs e) => MetroMessageBox.Show(this.Owner, $"Error occured with websocket: {e.Message}");

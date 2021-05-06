@@ -105,5 +105,10 @@ namespace ChatProgram
                 new SoundPlayer(@"c:\Windows\Media\chimes.wav").Play();
             });
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ws.Close();
+        }
     }
 }

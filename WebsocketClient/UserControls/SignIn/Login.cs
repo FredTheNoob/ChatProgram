@@ -18,7 +18,7 @@ namespace ChatProgram.UserControls
 {
     public partial class Login : MetroUserControl
     {
-        private MetroUserControl signUpControl;
+        private SignUp signUpControl;
         private SignIn signInForm;
         private WebSocket ws;
 
@@ -28,7 +28,7 @@ namespace ChatProgram.UserControls
             InitializeComponent();
         }
 
-        public void Setup(SignIn _signInForm, MetroUserControl _SignUpControl, WebSocket _ws)
+        public void Setup(SignIn _signInForm, SignUp _SignUpControl, WebSocket _ws)
         {
             signInForm = _signInForm;
             signUpControl = _SignUpControl;
@@ -40,6 +40,11 @@ namespace ChatProgram.UserControls
             lblError.Text = _text;
             lblError.TextAlign = ContentAlignment.MiddleCenter;
             lblError.Visible = true;
+        }
+
+        public void SetActiveControl()
+        {
+            ActiveControl = txtUsername;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -63,6 +68,12 @@ namespace ChatProgram.UserControls
         {
             this.Hide();
             signUpControl.Show();
+            signUpControl.SetActiveControl();
+        }
+
+        private void txtUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) btnLogin_Click(sender, e);
         }
     }
 }
