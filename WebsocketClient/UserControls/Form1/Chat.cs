@@ -40,7 +40,13 @@ namespace ChatProgram.UserControls.Form1
 
         private void txtMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) btnSend_Click(sender, e);
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSend_Click(sender, e);
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
 
         public void AddMessage(string text)
