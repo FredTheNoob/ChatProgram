@@ -87,6 +87,10 @@ namespace WebsocketServer
                     Sessions.SendTo($"{user.name}§{user.name}: {data[2]}", userDictionary[data[1]]);
                     Send($"{data[1]}§{user.name}: {data[2]}");
                 }
+                else if (data[0] == "Close")
+                {
+                    userDictionary.Remove(data[1]);
+                }
             }
         }
     }

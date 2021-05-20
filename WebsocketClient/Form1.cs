@@ -108,6 +108,7 @@ namespace ChatProgram
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            ws.Send($"Close§{signedInUser.name}");
             ws.Close();
         }
     }

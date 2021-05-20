@@ -28,6 +28,7 @@ namespace ChatProgram
             usrSignUp.Hide();
         }
 
+        // Dette event kører når vi modtager noget fra serveren. Det vi modtager er hvorvidt validationen er fuldført og bruger data
         private void WsOnMessage(object sender, MessageEventArgs e)
         {
             // Visibility
@@ -55,6 +56,7 @@ namespace ChatProgram
             });
         }
 
+        // Når vi trykker på tilslut knappen
         private void btnConnect_Click(object sender, EventArgs e)
         {
             if (txtIP.Text == "")
@@ -63,16 +65,20 @@ namespace ChatProgram
                 return;
             }
 
+            // Lav en ny websocket på port 6969
             ws = new WebSocket($"ws://{txtIP.Text}:6969/Chat");
 
+            // Opsæt events
             ws.OnMessage += WsOnMessage;
             ws.OnOpen += OnOpen;
             ws.OnClose += OnClose;
             ws.OnError += OnError;
 
+            // Tilslut
             ws.Connect();
         }
 
+        // Når vores websocket åbnes
         private void OnOpen(object sender, EventArgs e)
         {
             // USER CONTROLS
@@ -86,12 +92,14 @@ namespace ChatProgram
             ws.OnOpen -= OnOpen;
         }
 
+        // Når vores websocket lukkes
         private void OnClose(object sender, CloseEventArgs e)
         {
             if (e.Code == 1005) return; // Hvis vi støder på exit koden 1005 ved vi at brugeren selv har lukket programmet
             MetroMessageBox.Show(this.Owner, $"Websocket closed {e.Code}: {e.Reason}");
         }
 
+        // Når vores websocket får en fejl
         private void OnError(object sender, ErrorEventArgs e) => MetroMessageBox.Show(this.Owner, $"Error occured with websocket: {e.Message}");
     }
 }
